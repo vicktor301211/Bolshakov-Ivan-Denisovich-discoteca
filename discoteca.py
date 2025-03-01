@@ -19,18 +19,21 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    color_index = random.randint(0, 7)
-    if color_index == 7:
-        BACKGROUND = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
-    else:
-        BACKGROUND = COLORS[color_index]
-
     for i in range(10):
         x = random.randint(0, 0)
         y = random.randint(0, 0)
         radius = random.randint(10, 100)
         color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
         pygame.draw.circle(screen, color, (x, y), radius)
+
+
+    color_index = random.randint(0, 7)
+    if color_index == 7:
+        BACKGROUND = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+    else:
+        BACKGROUND = COLORS[color_index]
+
+
 
     screen.fill(BACKGROUND)
     pygame.display.flip()
