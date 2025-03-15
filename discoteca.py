@@ -64,6 +64,7 @@ while running:
 
     # Обновление экрана
     pygame.display.flip()
+    
     clock.tick(FPS)
 
 # Завершение программы
