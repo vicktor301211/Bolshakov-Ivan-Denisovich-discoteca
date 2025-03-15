@@ -1,47 +1,70 @@
-import random
-
-from pygame.draw import circle
-
 from all_colors import *
+import random
 import pygame
 pygame.init()
+import pygame.mixer
 
-#pygame.mixer.init()
-#pygame.mixer.music.load('music.mp3')
-#pygame.mixer.music.play(-1)
+# Инициализация Pygame
+import pygame.mixer
+pygame.mixer.init()
 
-size = (1280, 740)
-pygame.display.set_caption('Домашняя дискотека')
-screen = pygame.display.set_mode(size, pygame.FULLSCREEN)
-screen.fill((255, 255, 255))
-BACKGROUND = (255, 255, 255)
-x = 0
-y = 0
-color = COLORS
-timer = 0
-pygame.display.flip()
+# Загрузка и воспроизведение музыки
+pygame.mixer.music.load('music/La La Land .mp3')
+pygame.mixer.music.play(-1)
+
+# Настройка окна
+size = (1280, 720)
+screen = pygame.display.set_mode(size)
+pygame.display.set_caption("My Game")
+
+# Список цветов
+colors = [RED, GREEN, BLUE, YELLOW, CYAN, MAGENTA, GRAY, ORANGE, PINK, BROWN, PURPLE, LIME, NAVY, OLIVE, MAROON, TEAL, SILVER, GOLD]
+BACKGROUND = (255, 255, 255)  # Белый фон
+screen.fill(BACKGROUND)
+
+# Список для хранения кругов
+circles = []
+circle_timer = 0  # Таймер для обновления кругов
+
+# Настройка FPS
+FPS = 60
+clock = pygame.time.Clock()
+
+# Основной игровой цикл
 running = True
 while running:
+    # Обработка событий игры
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
-    color_index = random.randint(0, 7)
-    if color_index == 7:
-        BACKGROUND = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
-    else:
-        BACKGROUND = COLORS[color_index]
+    # Основная логика игры
+    circle_timer += clock.get_time()
+    if circle_timer >= 1000:  # 1000 миллисекунд = 1 секунда
+        circle_timer = 0  # Сброс таймера
+        circles.clear()  # Очистка старых кругов
 
-    for i in range(10):
-        x = random.randint(0, 1280)
-        y = random.randint(0, 740)
-        radius = random.randint(10, 100)
-        color = COLORS
-        pygame.draw.circle(screen, random.choice(color), (x, y), radius)
+        # Генерация нового фона
+        BACKGROUND = random.choice(colors)
 
+        for _ in range(10):
+            x = random.randint(0, 1280)  # Случайная позиция по X
+            y = random.randint(0, 720) # Случайная позиция по Y
+            radius = random.randint(10, 100)
+            color = random.randint(0,255), random.randint(0,255), random.randint(0,255)  # Случайный цвет
+            circles.append((x, y, color, radius))  # Добавление круга в список
+
+    # Очистка экрана
     screen.fill(BACKGROUND)
+
+    # Отрисовка кругов
+    for circle in circles:
+        x, y, color, radius = circle
+        pygame.draw.circle(screen, color, (x, y), radius)
+
+    # Обновление экрана
     pygame.display.flip()
-    pygame.time.delay(random.randint(200, 800))
+    clock.tick(FPS)
 
-
+# Завершение программы
 pygame.quit()
